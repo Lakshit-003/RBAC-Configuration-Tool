@@ -1,0 +1,133 @@
+// Prisma Schema for RBAC Configuration Tool
+// Database: MySQL
+// ORM: Prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// USER MODEL
+// ============================================
+// Represents authenticated users in the system.
+// Uses UUID for primary key to avoid enumeration attacks.
+model User {
+  id        String   @id @default(uuid()) @db.Char(36)
+  email     String   @unique @db.VarChar(255)
+  password  String   @db.VarChar(255) // Stores bcrypt hashed password
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  userRoles UserRole[] @relation("UserToUserRole")
+
+  // Editorials authored by this user
+  editorials Editorial[]
+
+  // Indexes
+  @@index([email], name: "idx_user_email")
+  @@map("users")
+}
+
+// ============================================
+// ROLE MODEL
+// ============================================
+// Represents roles that can be assigned to users.
+// Examples: "admin", "editor", "viewer", "moderator"
+model Role {
+  id        String   @id @default(uuid()) @db.Char(36)
+  name      String   @unique @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  userRoles       UserRole[]       @relation("RoleToUserRole")
+  rolePermissions RolePermission[] @relation("RoleToRolePermission")
+
+  // Indexes
+  @@index([name], name: "idx_role_name")
+  @@map("roles")
+}
+
+// ============================================
+// PERMISSION MODEL
+// ============================================
+// Represents granular permissions in the system.
+// Format: "resource:action" (e.g., "post:edit", "user:delete")
+model Permission {
+  id          String   @id @default(uuid()) @db.Char(36)
+  name        String   @unique @db.VarChar(100)
+  description String?  @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  rolePermissions RolePermission[] @relation("PermissionToRolePermission")
+
+  // Indexes
+  @@index([name], name: "idx_permission_name")
+  @@map("permissions")
+}
+
+// ============================================
+// USER_ROLE JUNCTION TABLE
+// ============================================
+// Many-to-many relationship between Users and Roles.
+// A user can have multiple roles, and a role can be assigned to multiple users.
+model UserRole {
+  userId    String   @db.Char(36) @map("user_id")
+  roleId    String   @db.Char(36) @map("role_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, name: "UserToUserRole")
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade, name: "RoleToUserRole")
+
+  // Composite primary key ensures unique user-role pairs
+  @@id([userId, roleId])
+  @@index([userId], name: "idx_user_role_user_id")
+  @@index([roleId], name: "idx_user_role_role_id")
+  @@map("user_roles")
+}
+
+// ============================================
+// ROLE_PERMISSION JUNCTION TABLE
+// ============================================
+// Many-to-many relationship between Roles and Permissions.
+// A role can have multiple permissions, and a permission can be assigned to multiple roles.
+model RolePermission {
+  roleId       String   @db.Char(36) @map("role_id")
+  permissionId String   @db.Char(36) @map("permission_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  // Relations
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade, name: "RoleToRolePermission")
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade, name: "PermissionToRolePermission")
+
+  // Composite primary key ensures unique role-permission pairs
+  @@id([roleId, permissionId])
+  @@index([roleId], name: "idx_role_permission_role_id")
+  @@index([permissionId], name: "idx_role_permission_permission_id")
+  @@map("role_permissions")
+}
+
+// ============================================
+// Editorials
+// ============================================
+model Editorial {
+  id        String   @id @default(uuid()) @db.Char(36)
+  title     String   @db.VarChar(255)
+  content   String   @db.Text
+  authorId  String   @db.Char(36)
+  author    User     @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("editorials")
+}
+

@@ -1,0 +1,46 @@
+{
+  "name": "rbac-config-tool",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "db:seed": "node prisma/seed.js",
+    "db:reset": "node scripts/reset-db.js",
+    "test:smoke": "node scripts/smoke-check.js",
+    "test:smoke-admin": "node scripts/smoke-admin.js",
+    "dev:3000": "next dev -H 127.0.0.1 -p 3000"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "next": "^14.2.5",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.4.0",
+    "class-variance-authority": "^0.7.0",
+    "@prisma/client": "^5.19.1",
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.12",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.5.4",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.5",
+    "tailwindcss": "^3.4.4",
+    "postcss": "^8.4.40",
+    "autoprefixer": "^10.4.19",
+    "tailwindcss-animate": "^1.0.7",
+    "prisma": "^5.19.1",
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.6"
+  }
+}
