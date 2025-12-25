@@ -1,3 +1,7 @@
+export const dynamic = "force-dynamic";
+
+import { NextRequest, NextResponse } from "next/server";
+import { withAuth } from "@/middleware/auth";
 /**
  * Get Current User API Route
  *
@@ -6,11 +10,6 @@
  * Example protected route demonstrating authentication middleware usage
  * Returns the authenticated user's information
  */
-
-import { NextRequest, NextResponse } from "next/server";
-import { withAuth } from "@/middleware/auth";
-
-export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   // Use authentication middleware (typed)

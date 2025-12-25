@@ -1,3 +1,10 @@
+
+export const dynamic = "force-dynamic";
+
+import { NextRequest, NextResponse } from "next/server";
+import bcrypt from "bcrypt";
+import { db } from "@/lib/db";
+import { generateToken } from "@/lib/auth";
 /**
  * User Login API Route
  *
@@ -5,13 +12,6 @@
  *
  * Authenticates user with email and password, returns JWT token
  */
-
-import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcrypt";
-import { db } from "@/lib/db";
-import { generateToken } from "@/lib/auth";
-
-export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   try {
