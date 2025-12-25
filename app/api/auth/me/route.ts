@@ -11,8 +11,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "@/middleware/auth";
 
 export async function GET(request: NextRequest) {
-  // Use authentication middleware
-  const authResult = await withAuth(request);
+  // Use authentication middleware (typed)
+  const authResult = (await withAuth(
+    request
+  )) as import("@/middleware/auth").AuthResult;
 
   // If authResult is a NextResponse, it means authentication failed
   if (authResult instanceof NextResponse) {
@@ -20,7 +22,9 @@ export async function GET(request: NextRequest) {
   }
 
   // Extract authenticated user from middleware result
-  const { user } = authResult;
+  const { user } = authResult as {
+    user: { id: string; email: string; roles?: string[] };
+  };
 
   // Return user information including roles
   return NextResponse.json(
@@ -28,7 +32,7 @@ export async function GET(request: NextRequest) {
       user: {
         id: user.id,
         email: user.email,
-        roles: (user as any).roles || [],
+        roles: user.roles || [],
       },
     },
     { status: 200 }

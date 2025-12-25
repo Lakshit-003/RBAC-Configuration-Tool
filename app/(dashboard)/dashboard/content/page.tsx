@@ -59,7 +59,7 @@ export default function ContentPage() {
           mounted = false;
           window.removeEventListener("focus", onFocus);
         };
-      } catch (err) {
+      } catch {
         // not authenticated or error - still try to load public editorials
         await loadEditorials();
       } finally {
@@ -76,7 +76,7 @@ export default function ContentPage() {
     try {
       const data = await apiFetch<Editorial[]>("/api/editorials");
       setItems(data);
-    } catch (err) {
+    } catch {
       // show empty list on error
       setItems([]);
     }
@@ -87,7 +87,7 @@ export default function ContentPage() {
       return alert("You don't have permission to create journals.");
     setBusyId("new");
     try {
-      const created = await apiFetch<Editorial>("/api/editorials", {
+      await apiFetch<Editorial>("/api/editorials", {
         method: "POST",
         body: JSON.stringify({ title, content }),
       });
@@ -171,7 +171,7 @@ export default function ContentPage() {
       setCanEditOwn(Boolean(editOwnRes?.allowed));
       setCanDeleteAny(Boolean(delAnyRes?.allowed));
       setCanDeleteOwn(Boolean(delOwnRes?.allowed));
-    } catch (err) {
+    } catch {
       // ignore
     }
   }

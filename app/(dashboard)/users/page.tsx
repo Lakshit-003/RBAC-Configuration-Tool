@@ -28,7 +28,7 @@ export default function UsersPage() {
       try {
         const me = await apiFetch<{ user: { id: string } }>("/api/auth/me");
         setMeId(me.user.id);
-      } catch (err) {
+      } catch {
         // ignore - user may not be admin
       }
       await loadUsers();

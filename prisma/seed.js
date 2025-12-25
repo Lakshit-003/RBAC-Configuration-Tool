@@ -1,7 +1,9 @@
+/* eslint-disable */
 // Try to load environment variables (.env.local); prefer dotenv but fallback to manual parse if not installed
 try {
+  // Prefer dotenv when available
   require("dotenv").config();
-} catch (e) {
+} catch {
   const fs = require("fs");
   const path = require("path");
   try {
@@ -19,8 +21,8 @@ try {
       });
       console.log("Reload env: .env.local");
     }
-  } catch (err) {
-    /* ignore */
+  } catch {
+    // ignore parsing errors
   }
 }
 

@@ -5,8 +5,6 @@ const BASE = process.env.BASE_URL || "http://127.0.0.1:3000";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@gmail.com";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Admin@1234";
 
-const timeout = (ms) => new Promise((r) => setTimeout(r, ms));
-
 async function req(path, opts = {}) {
   const url = `${BASE}${path}`;
   const res = await fetch(url, opts);
@@ -14,7 +12,9 @@ async function req(path, opts = {}) {
   let json = null;
   try {
     json = JSON.parse(text);
-  } catch (e) {}
+  } catch {
+    // ignore invalid JSON
+  }
   return { status: res.status, ok: res.ok, body: text, json };
 }
 

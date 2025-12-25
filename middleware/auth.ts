@@ -25,9 +25,13 @@ export interface AuthenticatedRequest extends NextRequest {
  * @param request - Next.js request object
  * @returns NextResponse with 401 if unauthorized, or null if authorized
  */
+export type AuthResult =
+  | { user: { id: string; email: string; roles: string[] } }
+  | NextResponse;
+
 export async function authenticateRequest(
   request: NextRequest
-): Promise<{ user: { id: string; email: string } } | NextResponse> {
+): Promise<AuthResult> {
   // Extract token from Authorization header
   const authHeader = request.headers.get("authorization");
   const token = extractTokenFromHeader(authHeader);
@@ -103,6 +107,10 @@ export async function authenticateRequest(
  * }
  * ```
  */
-export async function withAuth(request: NextRequest) {
+export async function withAuth(
+  request: NextRequest
+): Promise<
+  { user: { id: string; email: string; roles: string[] } } | NextResponse
+> {
   return authenticateRequest(request);
 }

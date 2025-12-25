@@ -1,16 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "@/middleware/auth";
-import { requirePermission } from "@/middleware/rbac";
+import { isAdmin } from "@/lib/rbac";
 import { db } from "@/lib/db";
 
-export async function GET(request: NextRequest) {
-  // Require auth & journal:view permission
-  const auth = await withAuth(request);
-  if (auth instanceof NextResponse) return auth;
-
-  const perm = await requirePermission(auth.user.id, "journal:view");
-  if (perm instanceof NextResponse) return perm;
-
+export async function GET() {
   const editorials = await db.editorial.findMany({
     select: {
       id: true,
@@ -31,9 +24,19 @@ export async function POST(request: NextRequest) {
   if (auth instanceof NextResponse) return auth;
   const { user } = auth;
 
-  // Require journal:create permission (admin bypasses via hasPermission)
-  const perm = await requirePermission(user.id, "journal:create");
-  if (perm instanceof NextResponse) return perm;
+  // Editors and Admins can create
+  const admin = await isAdmin(user.id);
+  // Check if user has editor role
+  const roleRecords = await db.userRole.findMany({
+    where: { userId: user.id },
+    select: { role: { select: { name: true } } },
+  });
+  const roles = new Set(roleRecords.map((r) => r.role.name));
+  const isEditor = roles.has("editor");
+
+  if (!admin && !isEditor) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
 
   const body = await request.json();
   const title = (body.title || "").trim();
