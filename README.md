@@ -10,7 +10,7 @@ A full-stack Role-Based Access Control (RBAC) Configuration Tool built with Next
 - **Database**: MySQL
 - **Authentication**: JWT (to be implemented)
 - **UI**: shadcn/ui + Tailwind CSS
-- **Deployment**: Vercel
+- **Deployment**: Frontend & Backend on **Render**, Database on **Railway (MySQL)**
 
 ## Getting Started
 
@@ -97,17 +97,6 @@ Automated smoke test (requires the dev server to be running):
 BASE_URL=http://localhost:3000 npm run test:smoke
 ```
 
-Manual verification checklist (short):
-
-1. Start the dev server: `npm run dev` and open http://localhost:3000 (or the port Next outputs).
-2. Visit **Log in** and **Sign up** from the landing page and confirm the pages render.
-3. Create an account using **Sign up**, then sign in and confirm you see a success toast and are redirected to `/dashboard`.
-4. The `/api/auth/me` endpoint now returns a `roles` array for the authenticated user; on `/dashboard`, confirm the sidebar shows **Content** for all roles, and **Permissions / Roles / Role-Permission Mapping** appear for admin users only.
-5. Use the dev debug controls on the auth pages (visible in non-production) to clear `localStorage.token` or disable the automatic redirect during testing.
-6. Verify the **Logout** button clears the token and redirects to `/login`.
-
-For a full step-by-step manual checklist, see `TESTING.md`.
-
 ## Database Commands
 
 - `npm run db:generate` - Generate Prisma Client
@@ -115,6 +104,5 @@ For a full step-by-step manual checklist, see `TESTING.md`.
 - `npm run db:migrate` - Create and apply migrations
 - `npm run db:studio` - Open Prisma Studio (database GUI)
 
-## License
-
-Private - Internal Use Only
+## RBAC Explanation for a Kid 
+**RBAC (Role-Based Access Control)** means everyone has a role, like a teacher or a student. Each role decides what you can do. Some people can change things like Teachers, some can only see them like students. This keeps the app safe and organized.
