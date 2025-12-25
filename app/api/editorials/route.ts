@@ -3,6 +3,8 @@ import { withAuth } from "@/middleware/auth";
 import { isAdmin } from "@/lib/rbac";
 import { db } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const editorials = await db.editorial.findMany({
     select: {

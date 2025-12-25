@@ -10,6 +10,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "@/middleware/auth";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   // Use authentication middleware (typed)
   const authResult = (await withAuth(

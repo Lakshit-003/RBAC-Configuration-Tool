@@ -11,6 +11,8 @@ import bcrypt from "bcrypt";
 import { db } from "@/lib/db";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
+export const dynamic = "force-dynamic";
+
 const SALT_ROUNDS = 12; // Recommended bcrypt salt rounds for production
 
 /**

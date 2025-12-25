@@ -3,6 +3,8 @@ import { db } from "@/lib/db";
 import { withAuth } from "@/middleware/auth";
 import { requirePermission } from "@/middleware/rbac";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }

@@ -3,6 +3,8 @@ import { db } from "@/lib/db";
 import { withAuth } from "@/middleware/auth";
 import { requireAdmin } from "@/middleware/rbac";
 
+export const dynamic = "force-dynamic";
+
 // POST /api/roles - create role (admin only)
 export async function POST(request: NextRequest) {
   const auth = await withAuth(request);

@@ -3,6 +3,8 @@ import { withAuth } from "@/middleware/auth";
 import { hasPermission } from "@/lib/rbac";
 import { db } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id") || request.url.split("/").pop();
