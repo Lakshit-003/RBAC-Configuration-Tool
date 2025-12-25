@@ -105,4 +105,5 @@ BASE_URL=http://localhost:3000 npm run test:smoke
 - `npm run db:studio` - Open Prisma Studio (database GUI)
 
 ## RBAC Explanation for a Kid 
-**RBAC (Role-Based Access Control)** means everyone has a role, like a teacher or a student. Each role decides what you can do. Some people can change things like Teachers, some can only see them like students. This keeps the app safe and organized.
+**RBAC (Role-Based Access Control)** means everyone gets a role, like a teacher or a student. Each role has specific permissions that decide what you can do. Teachers can add or change things, while students can only see them. This keeps the app safe and organized.
+
