@@ -1,9 +1,9 @@
+export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { withAuth } from "@/middleware/auth";
 import { requireAdmin } from "@/middleware/rbac";
 
-export const dynamic = "force-dynamic";
 
 // POST /api/permissions - create permission (admin only)
 export async function POST(request: NextRequest) {

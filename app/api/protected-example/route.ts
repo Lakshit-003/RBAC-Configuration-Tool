@@ -1,3 +1,7 @@
+export const dynamic = "force-dynamic";
+import { NextRequest, NextResponse } from "next/server";
+import { withAuth } from "@/middleware/auth";
+import { requirePermission } from "@/middleware/rbac";
 /**
  * Example protected API route demonstrating authentication + RBAC authorization.
  *
@@ -5,11 +9,7 @@
  * Requires permission: "edit:post"
  */
 
-import { NextRequest, NextResponse } from "next/server";
-import { withAuth } from "@/middleware/auth";
-import { requirePermission } from "@/middleware/rbac";
 
-export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   const auth = await withAuth(request);
