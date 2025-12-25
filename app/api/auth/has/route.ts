@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "@/middleware/auth";
 import { hasPermission } from "@/lib/rbac";
